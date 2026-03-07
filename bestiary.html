@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>БЕСТИАРИЙ | Darkest Hub</title>
+    <style>
+        :root {
+            --move-x: 0px;
+            --move-y: 0px;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            background-color: #000;
+            color: white;
+            font-family: 'Verdana', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .background-layer {
+            position: fixed;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('chars_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            transform: translate(var(--move-x), var(--move-y));
+            transition: transform 0.1s ease-out;
+            z-index: 1;
+        }
+
+        .back-link { 
+            position: relative;
+            z-index: 10;
+            color: #00aaff; 
+            text-decoration: none; 
+            align-self: flex-start; 
+            margin-bottom: 20px; 
+            font-weight: bold; 
+            font-size: 1.2rem; 
+        }
+
+        .slider-container {
+            position: relative;
+            z-index: 10;
+            max-width: 850px;
+            width: 100%;
+            border: 2px solid #4a3b2b;
+            background: rgba(5, 5, 5, 0.85); 
+            padding: 30px;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+        }
+
+        /* ЭФФЕКТ БЛЮРА */
+        .blur-wrapper {
+            filter: blur(15px);
+            transition: filter 0.8s ease;
+            pointer-events: none;
+        }
+
+        .monster-slide.revealed .blur-wrapper {
+            filter: blur(0px);
+            pointer-events: auto;
+        }
+
+        /* Навигация */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(139, 0, 0, 0.7);
+            color: #ffcc00;
+            border: 2px solid #4a3b2b;
+            padding: 20px 15px;
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 20;
+        }
+        .prev { left: -75px; }
+        .next { right: -75px; }
+
+        .monster-slide { display: none; cursor: pointer; }
+        .active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Цвета */
+        .white { color: #ffffff; }
+        .red { color: #ff4444; }
+        .yellow { color: #ffcc00; font-weight: bold; }
+        .green { color: #00ff00; font-weight: bold; }
+        .blue { color: #00aaff; font-weight: bold; }
+        .purple { color: #a335ee; font-weight: bold; }
+        .rust { color: #b7410e; font-weight: bold; } 
+        
+        .header { text-decoration: underline; font-weight: bold; }
+        .monster-name { color: #a335ee; font-size: 2rem; font-weight: bold; display: block; margin-bottom: 15px; }
+        .motto { color: #ff4444; font-weight: bold; font-style: italic; display: block; margin-bottom: 5px; font-size: 1.1rem; }
+        .ability-item { margin-top: 15px; border-left: 2px solid #222; padding-left: 15px; }
+        img { width: 100%; border: 1px solid #333; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="background-layer"></div>
+
+    <a href="index.html" class="back-link">← Вернуться в таверну</a>
+
+    <div class="slider-container" id="monsterCard">
+        <button class="nav-btn prev" onclick="event.stopPropagation(); changeSlide(-1)">❮</button>
+        <button class="nav-btn next" onclick="event.stopPropagation(); changeSlide(1)">❯</button>
+
+        <div class="monster-slide active" onclick="revealMonster(this)">
+<span class="monster-name">Костяной солдат</span>
+            <div class="blur-wrapper">
+                <span class="motto">"Сталь и кости — единственное, что осталось от его чести."</span>
+                <img src="skeleton.jpg" alt="Костяной солдат"> 
+                <p><span class="header">Тип:</span> Нежить, Средний размер.</p>
+                <p><span class="header">Характеристики:</span> 
+                    <span class="yellow">СИЛ 12 (+1), ЛОВ 14 (+2), ВЫН 12 (+1),</span> 
+                    <span class="red">ИНТ 6 (-2), МУД 8 (-1), ХАР 5 (-3).</span>
+                </p>
+                <p><span class="yellow">КД: 12</span> <span class="white">( Стальной наплечник и лахмотья )</span>. <span class="green">ХП: 11.</span></p>
+                <h3 class="blue">Способности:</h3>
+                <div class="ability-item">
+                    <p><span class="rust">Ржавый меч:</span> Ближний бой <span class="blue">(1-2 позиция)</span>, <span class="yellow">+5 к попаданию</span>, урон <span class="yellow">1d6 + 1</span> рубящего урона.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="red" style="font-weight: bold;">Особенность: Нежить.</span> <span class="red">Иммунитет к кровотечению</span>. Уязвимость к <span class="white">дробящему урону</span>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="monster-slide" onclick="revealMonster(this)">
+            <span class="monster-name">Костяной арбалетчик</span>
+            <div class="blur-wrapper">
+                <span class="motto">"Смерть прилетает из тени со свистом болта."</span>
+                <img src="kosarb.jpg" alt="Костяной арбалетчик"> 
+                <p><span class="header">Тип:</span> Нежить, Средний размер.</p>
+                <p><span class="header">Характеристики:</span> 
+                    <span class="yellow">СИЛ 10 (+0), ЛОВ 16 (+3), ВЫН 12 (+1),</span> 
+                    <span class="red">ИНТ 6 (-2), МУД 10 (+0), ХАР 5 (-3).</span>
+                </p>
+                <p><span class="yellow">КД: 14</span> <span class="white">( легкий стальной доспех )</span>. <span class="green">ХП: 15.</span></p>
+                <h3 class="blue">Способности:</h3>
+                <div class="ability-item">
+                    <p><span class="rust">Выстрел болта:</span> Дальний бой <span class="blue">(3-4 позиция)</span>, <span class="yellow">+5 к попаданию</span>, урон <span class="yellow">1d8 + 3</span> колющего урона.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="rust">Удар штыком:</span> Ближний бой <span class="blue">(1-2 позиция)</span>, <span class="yellow">+3 к попаданию</span>, урон <span class="yellow">1d4 + 1</span> колющего урона.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="red" style="font-weight: bold;">Особенность: Нежить.</span> <span class="red">Иммунитет к кровотечению</span>. Уязвимость к <span class="white">дробящему урону</span>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="monster-slide" onclick="revealMonster(this)">
+            <span class="monster-name">Костяной защитник</span>
+            <div class="blur-wrapper">
+                <span class="motto">"Щит и топор — вечная преграда на пути живых."</span>
+                <img src="jagerskillet.jpg" alt="Костяной защитник"> 
+                <p><span class="header">Тип:</span> Нежить, Средний размер.</p>
+                <p><span class="header">Характеристики:</span> 
+                    <span class="yellow">СИЛ 14 (+2), ЛОВ 10 (+0), ВЫН 14 (+2),</span> 
+                    <span class="red">ИНТ 6 (-2), МУД 8 (-1), ХАР 5 (-3).</span>
+                </p>
+<p><span class="yellow">КД: 14</span> <span class="white">( Тяжелый доспех и щит )</span>. <span class="green">ХП: 15.</span></p>
+                <h3 class="blue">Способности:</h3>
+                <div class="ability-item">
+                    <p><span class="rust">Удар топором:</span> Ближний бой <span class="blue">(1-2 позиция)</span>, <span class="yellow">+4 к попаданию</span>, урон <span class="yellow">1d8 + 2</span> рубящего урона.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="blue">Бремя мертвеца:</span> <span class="white">Защищает союзника и усиливает себя </span> <span class="blue">в течении 2 раундов</span>. Поглощает <span class="blue">2 ед.</span> урона.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="red" style="font-weight: bold;">Особенность: Нежить.</span> <span class="red">Иммунитет к кровотечению</span>. Уязвимость к <span class="white">дробящему урону</span>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="monster-slide" onclick="revealMonster(this)">
+            <span class="monster-name">Костяной придворный</span>
+            <div class="blur-wrapper">
+                <span class="motto">"Сладкое вино безумия льется рекой в пустых залах."</span>
+                <img src="predvorn.jpg" alt="Костяной придворный">
+                
+                <p><span class="header">Тип:</span> Нежить, Средний размер.</p>
+                <p><span class="header">Характеристики:</span> 
+                    <span class="yellow">СИЛ 8 (-1), ЛОВ 14 (+2), ВЫН 10 (+0),</span> 
+                    <span class="red">ИНТ 12 (+1), МУД 10 (+0), ХАР 5 (-3).</span>
+                </p>
+                <p><span class="yellow">КД: 12</span> <span class="white">( Шелковые лохмотья )</span>. <span class="green">ХП: 10.</span></p>
+                <h3 class="blue">Способности:</h3>
+                <div class="ability-item">
+                    <p><span class="purple">Манящий кубок:</span> Дальний бой <span class="blue">(2-4 позиция)</span>, <span class="yellow">+5 к попаданию</span>. Цель получает <span class="purple">d12+2 ед. стресса</span>.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="rust">Нож во тьме:</span> Ближний бой <span class="blue">(1-2 позиция)</span>, <span class="yellow">+3 к попаданию</span>, урон <span class="yellow">1d4</span> колющего урона.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="red" style="font-weight: bold;">Особенность: Нежить.</span> <span class="red">Иммунитет к кровотечению</span>. Уязвимость к <span class="white">дробящему урону</span>.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let current = 0;
+        const slides = document.querySelectorAll('.monster-slide');
+
+        function changeSlide(n) {
+            slides[current].classList.remove('active');
+            current = (current + n + slides.length) % slides.length;
+            slides[current].classList.add('active');
+        }
+
+        function revealMonster(slideElement) {
+            slideElement.classList.add('revealed');
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.clientX) / 30;
+            const y = (window.innerHeight / 2 - e.clientY) / 30;
+            document.documentElement.style.setProperty('--move-x', x + 'px');
+            document.documentElement.style.setProperty('--move-y', y + 'px');
+        });
+    </script>
+
+</body>
+</html>
