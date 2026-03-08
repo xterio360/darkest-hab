@@ -3,22 +3,7 @@
 <head><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>БЕСТИАРИЙ | Darkest Hub</title>
-    <style>@media (max-width: 600px) {
-    .slider-container {
-        width: 92% !important; /* Делаем карточку чуть шире на телефоне */
-        padding: 15px !important;
-    }
-    .nav-btn {
-        padding: 8px 4px !important; /* Уменьшаем кнопки-стрелки */
-        font-size: 16px !important;
-        opacity: 0.8;
-    }
-    .prev { left: 5px !important; } /* Прижимаем их к краям внутри карточки */
-    .next { right: 5px !important; }
-    
-    .monster-name, .char-name { font-size: 1.6rem !important; }
-    .motto { font-size: 0.9rem !important; }
-}
+    <style>
         :root {
             --move-x: 0px;
             --move-y: 0px;
@@ -120,6 +105,30 @@
         .motto { color: #ff4444; font-weight: bold; font-style: italic; display: block; margin-bottom: 5px; font-size: 1.1rem; }
         .ability-item { margin-top: 15px; border-left: 2px solid #222; padding-left: 15px; }
         img { width: 100%; border: 1px solid #333; margin-bottom: 20px; }
+    /* --- ОЖИВЛЯЕМ МОБИЛЬНУЮ ВЕРСИЮ --- */
+        @media (max-width: 600px) {
+            .slider-container {
+                width: 95% !important;
+                padding: 20px 5px !important;
+            }
+            .nav-btn {
+                width: 35px !important;
+                padding: 10px 0 !important;
+                font-size: 18px !important;
+                opacity: 0.7;
+            }
+            .prev { left: 2px !important; }
+            .next { right: 2px !important; }
+
+            /* ЭТО САМОЕ ВАЖНОЕ: отодвигаем текст от стрелок */
+            .monster-slide, .char-slide {
+                padding: 0 45px !important; 
+                box-sizing: border-box;
+            }
+
+            .monster-name, .char-name { font-size: 1.5rem !important; }
+            .motto { font-size: 0.9rem !important; }
+        }
     </style>
 </head>
 <body>
@@ -253,4 +262,5 @@
 </body>
 
 </html>
+
 
