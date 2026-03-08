@@ -1,97 +1,52 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>БЕСТИАРИЙ | Darkest Hub</title>
     <style>
-        :root {
-            --move-x: 0px;
-            --move-y: 0px;
-        }
+        :root { --move-x: 0px; --move-y: 0px; }
 
         body {
-            margin: 0;
-            padding: 30px;
-            background-color: #000;
-            color: white;
-            font-family: 'Verdana', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
+            margin: 0; padding: 30px; background-color: #000; color: white;
+            font-family: 'Verdana', sans-serif; display: flex; flex-direction: column;
+            align-items: center; min-height: 100vh; overflow-x: hidden;
         }
 
         .background-layer {
-            position: fixed;
-            top: -5%;
-            left: -5%;
-            width: 110%;
-            height: 110%;
+            position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('chars_bg.jpg');
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
             transform: translate(var(--move-x), var(--move-y));
-            transition: transform 0.1s ease-out;
-            z-index: 1;
+            transition: transform 0.1s ease-out; z-index: 1;
         }
 
         .back-link { 
-            position: relative;
-            z-index: 10;
-            color: #00aaff; 
-            text-decoration: none; 
-            align-self: flex-start; 
-            margin-bottom: 20px; 
-            font-weight: bold; 
-            font-size: 1.2rem; 
+            position: relative; z-index: 10; color: #00aaff; text-decoration: none; 
+            align-self: flex-start; margin-bottom: 20px; font-weight: bold; font-size: 1.2rem; 
         }
 
         .slider-container {
-            position: relative;
-            z-index: 10;
-            max-width: 850px;
-            width: 100%;
-            border: 2px solid #4a3b2b;
-            background: rgba(5, 5, 5, 0.85); 
-            padding: 30px;
-            box-shadow: 0 0 50px rgba(0,0,0,1);
+            position: relative; z-index: 10; max-width: 850px; width: 100%;
+            border: 2px solid #4a3b2b; background: rgba(5, 5, 5, 0.85); 
+            padding: 30px; box-shadow: 0 0 50px rgba(0,0,0,1);
         }
 
-        /* ЭФФЕКТ БЛЮРА */
-        .blur-wrapper {
-            filter: blur(15px);
-            transition: filter 0.8s ease;
-            pointer-events: none;
-        }
+        .blur-wrapper { filter: blur(15px); transition: filter 0.8s ease; pointer-events: none; }
+        .monster-slide.revealed .blur-wrapper { filter: blur(0px); pointer-events: auto; }
 
-        .monster-slide.revealed .blur-wrapper {
-            filter: blur(0px);
-            pointer-events: auto;
-        }
-
-        /* Навигация */
         .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(139, 0, 0, 0.7);
-            color: #ffcc00;
-            border: 2px solid #4a3b2b;
-            padding: 20px 15px;
-            cursor: pointer;
-            font-size: 24px;
-            z-index: 20;
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(139, 0, 0, 0.7); color: #ffcc00; border: 2px solid #4a3b2b;
+            padding: 20px 15px; cursor: pointer; font-size: 24px; z-index: 20;
         }
         .prev { left: -75px; }
         .next { right: -75px; }
 
         .monster-slide { display: none; cursor: pointer; }
         .active { display: block; animation: fadeIn 0.5s; }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Цвета */
         .white { color: #ffffff; }
         .red { color: #ff4444; }
         .yellow { color: #ffcc00; font-weight: bold; }
@@ -102,47 +57,30 @@
         
         .header { text-decoration: underline; font-weight: bold; }
         .monster-name { color: #a335ee; font-size: 2rem; font-weight: bold; display: block; margin-bottom: 15px; }
+        .boss-name { color: #ff4444 !important; }
         .motto { color: #ff4444; font-weight: bold; font-style: italic; display: block; margin-bottom: 5px; font-size: 1.1rem; }
         .ability-item { margin-top: 15px; border-left: 2px solid #222; padding-left: 15px; }
         img { width: 100%; border: 1px solid #333; margin-bottom: 20px; }
-    /* --- ОЖИВЛЯЕМ МОБИЛЬНУЮ ВЕРСИЮ --- */
+
         @media (max-width: 600px) {
-            .slider-container {
-                width: 95% !important;
-                padding: 20px 5px !important;
-            }
-            .nav-btn {
-                width: 35px !important;
-                padding: 10px 0 !important;
-                font-size: 18px !important;
-                opacity: 0.7;
-            }
-            .prev { left: 2px !important; }
-            .next { right: 2px !important; }
-
-            /* ЭТО САМОЕ ВАЖНОЕ: отодвигаем текст от стрелок */
-            .monster-slide, .char-slide {
-                padding: 0 45px !important; 
-                box-sizing: border-box;
-            }
-
-            .monster-name, .char-name { font-size: 1.5rem !important; }
+            .slider-container { width: 95% !important; padding: 20px 5px !important; }
+            .nav-btn { width: 35px !important; padding: 10px 0 !important; font-size: 18px !important; opacity: 0.7; }
+            .prev { left: 2px !important; } .next { right: 2px !important; }
+            .monster-slide { padding: 0 45px !important; box-sizing: border-box; }
+            .monster-name { font-size: 1.5rem !important; }
             .motto { font-size: 0.9rem !important; }
         }
     </style>
 </head>
 <body>
-
     <div class="background-layer"></div>
-
     <a href="index.html" class="back-link">← Вернуться в таверну</a>
 
     <div class="slider-container" id="monsterCard">
         <button class="nav-btn prev" onclick="event.stopPropagation(); changeSlide(-1)">❮</button>
         <button class="nav-btn next" onclick="event.stopPropagation(); changeSlide(1)">❯</button>
-
-        <div class="monster-slide active" onclick="revealMonster(this)">
-<span class="monster-name">Костяной солдат</span>
+<div class="monster-slide active" onclick="revealMonster(this)">
+            <span class="monster-name">Костяной солдат</span>
             <div class="blur-wrapper">
                 <span class="motto">"Сталь и кости — единственное, что осталось от его чести."</span>
                 <img src="skeleton.jpg" alt="Костяной солдат"> 
@@ -151,7 +89,7 @@
                     <span class="yellow">СИЛ 12 (+1), ЛОВ 14 (+2), ВЫН 12 (+1),</span> 
                     <span class="red">ИНТ 6 (-2), МУД 8 (-1), ХАР 5 (-3).</span>
                 </p>
-                <p><span class="yellow">КД: 12</span> <span class="white">( Стальной наплечник и лахмотья )</span>. <span class="green">ХП: 11.</span></p>
+                <p><span class="yellow">КД: 12</span> <span class="white">(Стальной наплечник и лахмотья)</span>. <span class="green">ХП: 11.</span></p>
                 <h3 class="blue">Способности:</h3>
                 <div class="ability-item">
                     <p><span class="rust">Ржавый меч:</span> Ближний бой <span class="blue">(1-2 позиция)</span>, <span class="yellow">+5 к попаданию</span>, урон <span class="yellow">1d6 + 1</span> рубящего урона.</p>
@@ -172,7 +110,7 @@
                     <span class="yellow">СИЛ 10 (+0), ЛОВ 16 (+3), ВЫН 12 (+1),</span> 
                     <span class="red">ИНТ 6 (-2), МУД 10 (+0), ХАР 5 (-3).</span>
                 </p>
-                <p><span class="yellow">КД: 14</span> <span class="white">( легкий стальной доспех )</span>. <span class="green">ХП: 15.</span></p>
+                <p><span class="yellow">КД: 14</span> <span class="white">(легкий стальной доспех)</span>. <span class="green">ХП: 15.</span></p>
                 <h3 class="blue">Способности:</h3>
                 <div class="ability-item">
                     <p><span class="rust">Выстрел болта:</span> Дальний бой <span class="blue">(3-4 позиция)</span>, <span class="yellow">+5 к попаданию</span>, урон <span class="yellow">1d8 + 3</span> колющего урона.</p>
@@ -195,8 +133,8 @@
                 <p><span class="header">Характеристики:</span> 
                     <span class="yellow">СИЛ 14 (+2), ЛОВ 10 (+0), ВЫН 14 (+2),</span> 
                     <span class="red">ИНТ 6 (-2), МУД 8 (-1), ХАР 5 (-3).</span>
-                </p>
-<p><span class="yellow">КД: 14</span> <span class="white">( Тяжелый доспех и щит )</span>. <span class="green">ХП: 15.</span></p>
+</p>
+                <p><span class="yellow">КД: 14</span> <span class="white">(Тяжелый доспех и щит)</span>. <span class="green">ХП: 15.</span></p>
                 <h3 class="blue">Способности:</h3>
                 <div class="ability-item">
                     <p><span class="rust">Удар топором:</span> Ближний бой <span class="blue">(1-2 позиция)</span>, <span class="yellow">+4 к попаданию</span>, урон <span class="yellow">1d8 + 2</span> рубящего урона.</p>
@@ -215,13 +153,12 @@
             <div class="blur-wrapper">
                 <span class="motto">"Сладкое вино безумия льется рекой в пустых залах."</span>
                 <img src="predvorn.jpg" alt="Костяной придворный">
-                
                 <p><span class="header">Тип:</span> Нежить, Средний размер.</p>
                 <p><span class="header">Характеристики:</span> 
                     <span class="yellow">СИЛ 8 (-1), ЛОВ 14 (+2), ВЫН 10 (+0),</span> 
                     <span class="red">ИНТ 12 (+1), МУД 10 (+0), ХАР 5 (-3).</span>
                 </p>
-                <p><span class="yellow">КД: 12</span> <span class="white">( Шелковые лохмотья )</span>. <span class="green">ХП: 10.</span></p>
+                <p><span class="yellow">КД: 12</span> <span class="white">(Шелковые лохмотья)</span>. <span class="green">ХП: 10.</span></p>
                 <h3 class="blue">Способности:</h3>
                 <div class="ability-item">
                     <p><span class="purple">Манящий кубок:</span> Дальний бой <span class="blue">(2-4 позиция)</span>, <span class="yellow">+5 к попаданию</span>. Цель получает <span class="purple">d12+2 ед. стресса</span>.</p>
@@ -235,22 +172,44 @@
             </div>
         </div>
 
+        <div class="monster-slide" onclick="revealMonster(this)">
+            <span class="monster-name boss-name">Костяной командир</span>
+            <div class="blur-wrapper">
+                <span class="motto">"Его приказы звучат как хруст костей под сапогами марширующей смерти."</span>
+                <img src="commander.jpg" alt="Костяной командир"> 
+                <p><span class="header">Тип:</span> Нежить, Средний размер.</p>
+                <p><span class="header">Характеристики:</span> 
+                    <span class="yellow">СИЛ 18 (+4), ЛОВ 8 (-1), ВЫН 16 (+3),</span> 
+                    <span class="red">ИНТ 8 (-1), МУД 12 (+1).</span>
+                </p>
+                <p><span class="yellow">КД: 15</span> <span class="white">(Тяжелые латы и шипы)</span>. <span class="green">ХП: 45.</span></p>
+                <h3 class="blue">Способности:</h3>
+                <div class="ability-item">
+                    <p><span class="rust">Дробящий размах (Дубина):</span> Ближний бой, <span class="yellow">+6 к попаданию</span>, урон <span class="yellow">1d6 + 2</span> дробящего урона.</p>
+<p><span class="blue">Эффект:</span> Цель проходит <span class="yellow">Спасбросок Силы (СЛ 14)</span> или отлетает на <span class="blue">1 позицию назад</span>.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="rust">Сотрясение земли (5-6):</span> <span class="white">Все герои проходят Спасбросок Ловкости (СЛ 13).</span></p>
+                    <p><span class="red">Провал:</span> <span class="yellow">1d8 урона</span> и <span class="purple">Оглушение</span>. <span class="green">Успех:</span> половина урона.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="red" style="font-weight: bold;">Шипастый доспех:</span> Ближняя атака по боссу наносит атакующему <span class="red">1 ед. урона</span>.</p>
+                </div>
+                <div class="ability-item">
+                    <p><span class="red" style="font-weight: bold;">Особенность: Нежить.</span> <span class="red">Иммунитет к кровотечению</span>. Уязвимость к <span class="white">дробящему урону</span>.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        let current = 0;
-        const slides = document.querySelectorAll('.monster-slide');
-
+        let current = 0; const slides = document.querySelectorAll('.monster-slide');
         function changeSlide(n) {
             slides[current].classList.remove('active');
             current = (current + n + slides.length) % slides.length;
             slides[current].classList.add('active');
         }
-
-        function revealMonster(slideElement) {
-            slideElement.classList.add('revealed');
-        }
-
+        function revealMonster(slideElement) { slideElement.classList.add('revealed'); }
         document.addEventListener('mousemove', (e) => {
             const x = (window.innerWidth / 2 - e.clientX) / 30;
             const y = (window.innerHeight / 2 - e.clientY) / 30;
@@ -258,9 +217,5 @@
             document.documentElement.style.setProperty('--move-y', y + 'px');
         });
     </script>
-
 </body>
-
 </html>
-
-
