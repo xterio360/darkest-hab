@@ -3,7 +3,22 @@
 <head><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>ТАВЕРНА | D&D Hub</title>
-    <style>
+    <style>/* Специально для мобилок */
+@media (max-width: 600px) {
+    h1 { 
+        font-size: 3rem !important; /* Уменьшаем заголовок в 2 раза */
+        letter-spacing: 5px !important; 
+    }
+    .container { 
+        padding: 20px !important; 
+        width: 90% !important; 
+    }
+    .menu-grid { 
+        flex-direction: column; /* Кнопки встанут друг под другом */
+        gap: 15px !important; 
+    }
+    .card { width: auto !important; }
+}
         :root {
             --move-x: 0px;
             --move-y: 0px;
@@ -159,3 +174,4 @@
 </body>
 
 </html>
+
